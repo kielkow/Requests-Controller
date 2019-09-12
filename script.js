@@ -3,8 +3,8 @@
 //para deletar o pedido-> /api/pedidorest/pedido/{ID} DELETE
 //para selecionar por Id-> /api/pedidorest/pedido/{ID} GET
 
-$("#dados").click(function () {
-    $("#formProd").toggle();
+$("#btn-primary").click(function () {
+    $("#formNovo").toggle();
 });
 
 $("#tabela").click(function () {
