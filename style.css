@@ -19,3 +19,12 @@
 .input-group{
     margin-top: 5px;
 }
+.label{
+    font-size: 30px;
+    color: #007bff;
+}
+.label_listar{
+    font-size: 30px;
+    color: #007bff;
+    margin-bottom: 0px;
+}
