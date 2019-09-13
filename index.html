@@ -16,8 +16,8 @@
     <h1 class="text-center">Controle de Pedidos</h1>
 
     <form class="form formNovoPedido">
-        <button class="btn btn-primary btn_novo" type="submit" id="btn_add">+ Novo Pedido</button>
-        <form class="formAdd">
+        <button class="btn btn-primary btn_novo" type="submit">+ Novo Pedido</button>
+        <form class="form formAdd" style="display: none">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">Pedido</span>
@@ -29,22 +29,22 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">Valor</span>
                 </div>
-                <input type="text" class="form-control" placeholder="Valor do pedido" aria-label="Username"
+                <input type="number" class="form-control" placeholder="Valor do pedido" aria-label="Username"
                     aria-describedby="basic-addon1">
             </div>
-            <button class="btn btn-primary" type="submit" id="btn_salvar">Salvar</button>
+            <button class="btn btn-primary btn_salvar" type="submit" id="btn_salvar">Salvar</button>
         </form>
     </form>
 
     <form class="form formConsulta">
         <div class="form-group">
-            <label for="data">Pedido</label>
+            <label class="label" for="data">Pedido</label>
             <input type="number" id="id_pedido" class="form-control" required autofocus
                 placeholder="Digite o número do pedido" />
         </div>
-        <button class="btn btn-primary" type="submit" id="btn_consultar">Consultar</button>
+        <button class="btn btn-primary btn_consultar" type="submit">Consultar</button>
 
-        <table class="table tb_consulta">
+        <table class="table tb_consulta" style="display: none">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
@@ -63,11 +63,11 @@
 
     <form class="form formListar">
         <div class="form-group">
-            <label for="data">Pedidos Cadastrados</label>
+            <label class="label label_listar" for="data">Pedidos Cadastrados</label>
         </div>
         <button class="btn btn-primary" type="submit" id="btn_listar">Listar</button>
 
-        <table class="table tb_listar">
+        <table class="table tb_listar" style="display: none">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
