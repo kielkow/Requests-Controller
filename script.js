@@ -7,12 +7,9 @@ $(".btn_novo").click(function () {
     $(".formAdd").toggle();
 });
 
-$("#tabela").click(function () {
-    $("#dado").toggle();
-});
-
 function listarPedido() {
-    $.ajax("/api/pedidorest/pedido").done(function (dados) {
+
+    $.ajax("/api/pedidorest/pedido").done( (dados) => {
 
         var html = "<tr>";
         for (var i = 0; i < dados.length; i++) {
@@ -25,18 +22,36 @@ function listarPedido() {
             html += "<td>" + dados[i].dt_updated + "</td>";
             html += "<td>" + dados[i].id_userupdated + "</td>";
             html += "<td>" + dados[i].ds_recordthumbprint + "</td>";
-            html += "<td> <input type = 'button' id='btnEd' value ='Editar' onclick='editarPedido(" + dados[i].id_cst_pedido + ',' + dados[i].nr_pedido + ',' + dados[i].vl_total + ")'/></td>";
-            html += "<td> <input type = 'button' id='btnEx' value ='Excluir' onclick='excluirPedido(" + dados[i].id_cst_pedido + ")'/></td>";
+            html += "<td> <input type = 'button' id='btnEd' value ='Editar' onclick='editarPedido(" + dado.id_cst_pedido + ',' + dado.nr_pedido + ',' + dado.vl_total + ")'/></td>";
+            html += "<td> <input type = 'button' id='btnEx' value ='Excluir' onclick='excluirPedido(" + dado.id_cst_pedido + ")'/></td>";
             html += "</tr>";
 
-            $("#registros #dados").html(html);
+            $(".tb_listar").html(html);
         };
+        /*
+        var html = "<tr>";
+        dados.forEach(element => {
+            html += "<td>" + element.id_cst_pedido + "</td>";
+            html += "<td>" + element.nr_pedido + "</td>";
+            html += "<td>" + element.vl_total + "</td>";
+            html += "<td>" + element.dt_created + "</td>";
+            html += "<td>" + element.id_usercreated + "</td>";
+            html += "<td>" + element.dt_updated + "</td>";
+            html += "<td>" + element.id_userupdated + "</td>";
+            html += "<td>" + element.ds_recordthumbprint + "</td>";
+            html += "<td> <input type = 'button' id='btnEd' value ='Editar' onclick='editarPedido(" + element.id_cst_pedido + ',' + element.nr_pedido + ',' + element.vl_total + ")'/></td>";
+            html += "<td> <input type = 'button' id='btnEx' value ='Excluir' onclick='excluirPedido(" + element.id_cst_pedido + ")'/></td>";
+            html += "</tr>";
+
+            $(".tb_listar").html(html);
+        });
+        */
     });
 };
 
 function consulta(id_cst_pedido) {
 
-    var consulta = document.getElementById('conTab').value;
+    var consulta = document.querySelector('.input_consulta').value
     if (consulta == id_cst_pedido) {
 
         document.getElementById('id').value = id_cst_pedido;
@@ -48,57 +63,56 @@ function consulta(id_cst_pedido) {
             "nr_pedido": nr_pedido,
             "vl_total": vl_total,
         }
+        $(".tb_consulta").toggle();
     } else {
         alert('Pedido não encontrado!')
     }
 }
 
 function Salvar() {
-    var idPedido = document.getElementById('id').value;
-    var numPedido = document.getElementById('pedido').value;
-    var vTot = document.getElementById('valorTot').value;
+    var numPedido = document.querySelector('.input_nomePedido');
+    var vTot = document.querySelector('.input_valorProduto');
 
-    document.getElementById('id').value = '';
-    document.getElementById('pedido').value = '';
-    document.getElementById('valorTot').value = '';
+    document.querySelector('.input_nomePedido').value = '';
+    document.querySelector('.input_valorProduto').value = '';
 
-    if (idPedido == "") {
-        var pedido = {
-            "nr_pedido": numPedido,
-            "vl_total": vTot,
-        }
-        alert("Arquivo Salvo com Sucesso")
-
-        $.ajax({
-            url: '/api/pedidorest/pedido',
-            type: 'POST',
-            data: pedido,
-            dataType: "JSON",
-            success: function (result) {
-                console.log(result)
-                listarPedido()
-            }
-        })
-    } else {
-        var pedido = {
-            "id_cst_pedido": idPedido,
-            "nr_pedido": numPedido,
-            "vl_total": vTot
-        }
-        alert('Pedido ' + idPedido + ' alterado com sucesso!')
-
-        $.ajax({
-            url: '/api/pedidorest/pedido',
-            type: 'POST',
-            data: pedido,
-            dataType: "JSON",
-            headers: { "X-HTTP-Method-Override": "PUT" },
-            success: function (result) {
-                console.log(result)
-                listarPedido()
-            }
-        })
+    var pedido = {
+        "nr_pedido": numPedido,
+        "vl_total": vTot,
     }
+    alert("Arquivo Salvo com Sucesso")
+
+    $.ajax({
+        url: '/api/pedidorest/pedido',
+        type: 'POST',
+        data: pedido,
+        dataType: "JSON",
+        success: function (result) {
+            console.log(result)
+            listarPedido()
+        }
+    })
+}
+
+function Editar() {
+    var pedido = {
+        "id_cst_pedido": idPedido,
+        "nr_pedido": numPedido,
+        "vl_total": vTot
+    }
+    alert('Pedido ' + idPedido + ' alterado com sucesso!')
+
+    $.ajax({
+        url: '/api/pedidorest/pedido',
+        type: 'POST',
+        data: pedido,
+        dataType: "JSON",
+        headers: { "X-HTTP-Method-Override": "PUT" },
+        success: function (result) {
+            console.log(result)
+            listarPedido()
+        }
+    })
 }
 
 function editarPedido(id_cst_pedido, nr_pedido, vl_total) {
