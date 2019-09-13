@@ -11,19 +11,21 @@ function listarPedido() {
 
     $.ajax("/api/pedidorest/pedido").done( (dados) => {
 
+        console.log('teste')
+
         var html = "<tr>";
         for (var i = 0; i < dados.length; i++) {
 
-            html += "<td>" + dados[i].id_cst_pedido + "</td>";
-            html += "<td>" + dados[i].nr_pedido + "</td>";
-            html += "<td>" + dados[i].vl_total + "</td>";
-            html += "<td>" + dados[i].dt_created + "</td>";
-            html += "<td>" + dados[i].id_usercreated + "</td>";
-            html += "<td>" + dados[i].dt_updated + "</td>";
-            html += "<td>" + dados[i].id_userupdated + "</td>";
-            html += "<td>" + dados[i].ds_recordthumbprint + "</td>";
-            html += "<td> <input type = 'button' id='btnEd' value ='Editar' onclick='editarPedido(" + dado.id_cst_pedido + ',' + dado.nr_pedido + ',' + dado.vl_total + ")'/></td>";
-            html += "<td> <input type = 'button' id='btnEx' value ='Excluir' onclick='excluirPedido(" + dado.id_cst_pedido + ")'/></td>";
+            html += "<th scope='col'>" + dados[i].id_cst_pedido + "</td>";
+            html += "<th scope='col'>" + dados[i].nr_pedido + "</th>";
+            html += "<th scope='col'>" + dados[i].vl_total + "</th>";
+            html += "<th scope='col'>" + dados[i].dt_created + "</th>";
+            html += "<th scope='col'>" + dados[i].id_usercreated + "</th>";
+            html += "<th scope='col'>" + dados[i].dt_updated + "</th>";
+            html += "<th scope='col'>" + dados[i].id_userupdated + "</th>";
+            html += "<th scope='col'>" + dados[i].ds_recordthumbprint + "</th>";
+            html += "<th scope='col'> <input type = 'button' id='btnEd' value ='Editar' onclick='editarPedido(" + dado.id_cst_pedido + ',' + dado.nr_pedido + ',' + dado.vl_total + ")'/></th>";
+            html += "<th scope='col'> <input type = 'button' id='btnEx' value ='Excluir' onclick='excluirPedido(" + dado.id_cst_pedido + ")'/></th>";
             html += "</tr>";
 
             $(".tb_listar").html(html);
