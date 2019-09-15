@@ -1,148 +1,132 @@
-//para gravar pedido-> /api/pedidorest/pedido POST
-//para alterar o pedido-> /api/pedidorest/pedido PUT
-//para deletar o pedido-> /api/pedidorest/pedido/{ID} DELETE
-//para selecionar por Id-> /api/pedidorest/pedido/{ID} GET
-
 $(".btn_novo").click(function () {
     $(".formAdd").toggle();
 });
 
-function listarPedido() {
-
-    $.ajax("/api/pedidorest/pedido").done( (dados) => {
-
-        console.log('teste')
-
-        var html = "<tr>";
-        for (var i = 0; i < dados.length; i++) {
-
-            html += "<th scope='col'>" + dados[i].id_cst_pedido + "</td>";
-            html += "<th scope='col'>" + dados[i].nr_pedido + "</th>";
-            html += "<th scope='col'>" + dados[i].vl_total + "</th>";
-            html += "<th scope='col'>" + dados[i].dt_created + "</th>";
-            html += "<th scope='col'>" + dados[i].id_usercreated + "</th>";
-            html += "<th scope='col'>" + dados[i].dt_updated + "</th>";
-            html += "<th scope='col'>" + dados[i].id_userupdated + "</th>";
-            html += "<th scope='col'>" + dados[i].ds_recordthumbprint + "</th>";
-            html += "<th scope='col'> <input type = 'button' id='btnEd' value ='Editar' onclick='editarPedido(" + dado.id_cst_pedido + ',' + dado.nr_pedido + ',' + dado.vl_total + ")'/></th>";
-            html += "<th scope='col'> <input type = 'button' id='btnEx' value ='Excluir' onclick='excluirPedido(" + dado.id_cst_pedido + ")'/></th>";
-            html += "</tr>";
-
-            $(".tb_listar").html(html);
-        };
-        /*
-        var html = "<tr>";
-        dados.forEach(element => {
-            html += "<td>" + element.id_cst_pedido + "</td>";
-            html += "<td>" + element.nr_pedido + "</td>";
-            html += "<td>" + element.vl_total + "</td>";
-            html += "<td>" + element.dt_created + "</td>";
-            html += "<td>" + element.id_usercreated + "</td>";
-            html += "<td>" + element.dt_updated + "</td>";
-            html += "<td>" + element.id_userupdated + "</td>";
-            html += "<td>" + element.ds_recordthumbprint + "</td>";
-            html += "<td> <input type = 'button' id='btnEd' value ='Editar' onclick='editarPedido(" + element.id_cst_pedido + ',' + element.nr_pedido + ',' + element.vl_total + ")'/></td>";
-            html += "<td> <input type = 'button' id='btnEx' value ='Excluir' onclick='excluirPedido(" + element.id_cst_pedido + ")'/></td>";
-            html += "</tr>";
-
-            $(".tb_listar").html(html);
-        });
-        */
-    });
-};
-
-function consulta(id_cst_pedido) {
-
-    var consulta = document.querySelector('.input_consulta').value
-    if (consulta == id_cst_pedido) {
-
-        document.getElementById('id').value = id_cst_pedido;
-        document.getElementById('pedido').value = nr_pedido;
-        document.getElementById('valorTot').value = vl_total;
-
-        var pedido = {
-            "id_cst_pedido": id_cst_pedido,
-            "nr_pedido": nr_pedido,
-            "vl_total": vl_total,
-        }
-        $(".tb_consulta").toggle();
-    } else {
-        alert('Pedido não encontrado!')
-    }
-}
-
-function Salvar() {
-    var numPedido = document.querySelector('.input_nomePedido');
-    var vTot = document.querySelector('.input_valorProduto');
+$('.btn_salvar').click(function salvarPedido() {
+    let numPedido = document.querySelector('.input_nomePedido');
+    let vTot = document.querySelector('.input_valorProduto');
 
     document.querySelector('.input_nomePedido').value = '';
     document.querySelector('.input_valorProduto').value = '';
 
-    var pedido = {
+    let pedido = {
         "nr_pedido": numPedido,
         "vl_total": vTot,
     }
-    alert("Arquivo Salvo com Sucesso")
 
     $.ajax({
-        url: '/api/pedidorest/pedido',
         type: 'POST',
+        url: '/api/pedidorest/pedido',
         data: pedido,
-        dataType: "JSON",
+        dataType: "json",
         success: function (result) {
             console.log(result)
-            listarPedido()
+            alert("Pedido salvo com sucesso")
+        },
+        error: (error) => {
+            console.log(error)
+            alert('Não foi possível salvar pedido')
         }
     })
-}
+})
 
-function Editar() {
-    var pedido = {
+$('.btn_listar').click(function listarPedido() {
+    $.ajax({
+        type: "GET",
+        url: "https://estagiarios-hml.plusoftomni.com.br/api/pedidorest/pedido",
+        success: (pedidos) => {
+            console.log('success', pedidos)
+            pedidos.forEach(element => {
+                let html = "<tr>";
+                html += "<th scope='col'>" + element.id_cst_pedido + "</th>";
+                html += "<th scope='col'>" + element.nr_pedido + "</th>";
+                html += "<th scope='col'>" + element.vl_total + "</th>";
+                html += "<th scope='col'>" + element.dt_created + "</th>";
+                html += "<th scope='col'>" + element.id_usercreated + "</th>";
+                html += "<th scope='col'>" + element.dt_updated + "</th>";
+                html += "<th scope='col'>" + element.id_userupdated + "</th>";
+                html += "<th scope='col'>" + element.ds_recordthumbprint + "</th>";
+                html += "<th scope='col'><button class='btn btn-primary btn_editar' type='submit'>Editar</button></th>"
+                html += "<th scope='col'><button class='btn btn-primary btn_excluir' type='submit'>Excluir</button></th>"
+                html += "</tr>";
+                $(".thd_listar").append(html);
+            })
+            $(".tb_listar").toggle();
+        },
+        error: (error) => {
+            console.log(error)
+            alert('Não foi possível listar')
+        }
+    })
+})
+
+$('.btn_consulta').click(function consultarPedido() {
+    let idPedido = document.querySelector(".input_consulta").value
+    $.ajax({
+        type: 'GET',
+        url: 'https://estagiarios-hml.plusoftomni.com.br/api/pedidorest/pedido/' + idPedido,
+        success: (pedido) => {
+            console.log(pedido)
+            let html = "<tr>"
+            html += "<th scope='col'>" + pedido[i].id_cst_pedido + "</th>";
+            html += "<th scope='col'>" + pedido[i].nr_pedido + "</th>";
+            html += "<th scope='col'>" + pedido[i].vl_total + "</th>";
+            html += "<th scope='col'>" + pedido[i].dt_created + "</th>";
+            html += "<th scope='col'>" + pedido[i].id_usercreated + "</th>";
+            html += "<th scope='col'>" + pedido[i].dt_updated + "</th>";
+            html += "<th scope='col'>" + pedido[i].id_userupdated + "</th>";
+            html += "<th scope='col'>" + pedido[i].ds_recordthumbprint + "</th>";
+            html += "</tr>"
+            $('.tbody_consulta').append(html)
+            $(".tb_consulta").toggle();
+        },
+        error: (error) => {
+            console.log(error)
+            alert('Não foi possível buscar pedido ' + idPedido)
+        }
+    })
+})
+
+$('.btn_editar').click(function editarPedido() {
+    let pedido = {
         "id_cst_pedido": idPedido,
         "nr_pedido": numPedido,
         "vl_total": vTot
     }
-    alert('Pedido ' + idPedido + ' alterado com sucesso!')
 
     $.ajax({
-        url: '/api/pedidorest/pedido',
-        type: 'POST',
+        type: 'PUT',
+        url: 'https://estagiarios-hml.plusoftomni.com.br/api/pedidorest/pedido' + idPedido,
         data: pedido,
-        dataType: "JSON",
-        headers: { "X-HTTP-Method-Override": "PUT" },
-        success: function (result) {
+        dataType: 'json',
+        success: (result) => {
             console.log(result)
             listarPedido()
+            alert('Pedido ' + idPedido + ' alterado com sucesso!')
+        },
+        error: (error) => {
+            console.log(error)
+            alert('Não foi possível editar pedido ' + idPedido)
         }
     })
-}
+})
 
-function editarPedido(id_cst_pedido, nr_pedido, vl_total) {
-    document.getElementById('id').value = id_cst_pedido;
-    document.getElementById('pedido').value = nr_pedido;
-    document.getElementById('valorTot').value = vl_total;
-
-    var pedido = {
-        "id_cst_pedido": id_cst_pedido,
-        "nr_pedido": nr_pedido,
-        "vl_total": vl_total,
-    }
-}
-
-function excluirPedido(idPedido) {
-
+$('btn_excluir').click(function excluirPedido() {
     decisao = confirm('Tem certeza que deseja excluir o pedido ' + idPedido + '?')
     if (decisao) {
         $.ajax({
-            url: '/api/pedidorest/pedido/' + idPedido,
-            type: 'DELETE',
-            success: function (result) {
+            type: 'PUT',
+            url: 'https://estagiarios-hml.plusoftomni.com.br/api/pedidorest/pedido/' + idPedido,
+            dataType: 'json',
+            success: (result) => {
                 console.log(result)
                 listarPedido()
+                alert('Pedido excluído com sucesso!')
+            },
+            error: (error) => {
+                console.log(error)
+                alert('Não foi possível excluir pedido')
             }
         })
-        alert("Pedido excluído com sucesso!")
-    } else {
-        return false
     }
-}
+})
