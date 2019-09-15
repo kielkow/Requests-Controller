@@ -39,7 +39,7 @@
             <input type="number" class="form-control input_consulta" required autofocus
                 placeholder="Digite o número do pedido" />
         </div>
-        <button class="btn btn-primary btn_consultar" type="submit" onclick="consulta()">Consultar</button>
+        <button class="btn btn-primary btn_consultar" type="submit">Consultar</button>
 
         <table class="table tb_consulta" style="display: none">
             <thead>
@@ -54,6 +54,7 @@
                     <th scope="col">Protocolo</th>
                 </tr>
             </thead>
+            <tbody class="tbody_consulta"></tbody>
         </table>
     </form>
 
@@ -62,10 +63,10 @@
         <div class="form-group">
             <label class="label label_listar" for="data">Pedidos Cadastrados</label>
         </div>
-        <button class="btn btn-primary btn_listar" type="submit" onclick="listarPedido()">Listar</button>
+        <button class="btn btn-primary btn_listar" type="submit">Listar</button>
 
-        <table class="table tb_listar">
-            <thead>
+        <table class="table tb_listar" style="display: none">
+            <thead class="thd_listar">
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Pedido</th>
@@ -77,6 +78,7 @@
                     <th scope="col">Protocolo</th>
                 </tr>
             </thead>
+            <tbody class="tbody_listar"></tbody>
         </table>
     </form>
 
