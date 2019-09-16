@@ -33,7 +33,7 @@ $('.btn_salvar').click(function salvarPedido() {
 $('.btn_listar').click(function listarPedido() {
     $.ajax({
         type: "GET",
-        url: "https://estagiarios-hml.plusoftomni.com.br/api/pedidorest/pedido",
+        url: "https://testapi.io/api/kielkow/pedidos",
         success: (pedidos) => {
             console.log('success', pedidos)
             pedidos.forEach(element => {
