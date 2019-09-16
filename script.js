@@ -2,7 +2,7 @@ $(".btn_novo").click(function () {
     $(".formAdd").toggle();
 });
 
-$('.btn_salvar').click(function salvarPedido() {
+$('.btn_salvar').on('click', function salvarPedido() {
     let numPedido = document.querySelector('.input_nomePedido');
     let vTot = document.querySelector('.input_valorProduto');
 
