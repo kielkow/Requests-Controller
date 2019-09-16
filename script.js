@@ -1,4 +1,5 @@
-$(".btn_novo").click(function () {
+$(".btn_novo").on('click', function (event) {
+    event.preventDefault();
     $(".formAdd").toggle();
 });
 
@@ -92,7 +93,8 @@ $('.btn_consultar').on('click', function consultarPedido(event) {
     })
 })
 
-$('.btn_editar').click(function editarPedido() {
+$('.btn_editar').on('click', function editarPedido(event) {
+    event.preventDefault();
     let pedido = {
         "id_cst_pedido": idPedido,
         "nr_pedido": numPedido,
@@ -116,7 +118,8 @@ $('.btn_editar').click(function editarPedido() {
     })
 })
 
-$('btn_excluir').click(function excluirPedido() {
+$('btn_excluir').on('click', function excluirPedido(event) {
+    event.preventDefault();
     decisao = confirm('Tem certeza que deseja excluir o pedido ' + idPedido + '?')
     if (decisao) {
         $.ajax({
