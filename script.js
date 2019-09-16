@@ -2,7 +2,8 @@ $(".btn_novo").click(function () {
     $(".formAdd").toggle();
 });
 
-$('.btn_salvar').on('click', function salvarPedido() {
+$('.btn_salvar').on('click', function salvarPedido(event) {
+    event.preventDefault();
     let numPedido = document.querySelector('.input_nomePedido');
     let vTot = document.querySelector('.input_valorProduto');
 
@@ -30,58 +31,62 @@ $('.btn_salvar').on('click', function salvarPedido() {
     })
 })
 
-$('.btn_listar').click(function listarPedido() {
+$('.btn_listar').on('click', function listarPedido(event) {
+    event.preventDefault();
     $.ajax({
         type: "GET",
         url: "https://testapi.io/api/kielkow/pedidos",
+        dataType: 'json',
         success: (pedidos) => {
             console.log('success', pedidos)
-            pedidos.forEach(element => {
+            for (let i = 0; i < pedidos.length; i++) {
                 let html = "<tr>";
-                html += "<th scope='col'>" + element.id_cst_pedido + "</th>";
-                html += "<th scope='col'>" + element.nr_pedido + "</th>";
-                html += "<th scope='col'>" + element.vl_total + "</th>";
-                html += "<th scope='col'>" + element.dt_created + "</th>";
-                html += "<th scope='col'>" + element.id_usercreated + "</th>";
-                html += "<th scope='col'>" + element.dt_updated + "</th>";
-                html += "<th scope='col'>" + element.id_userupdated + "</th>";
-                html += "<th scope='col'>" + element.ds_recordthumbprint + "</th>";
-                html += "<th scope='col'><button class='btn btn-primary btn_editar' type='submit'>Editar</button></th>"
-                html += "<th scope='col'><button class='btn btn-primary btn_excluir' type='submit'>Excluir</button></th>"
+                html += "<th scope='col'>" + pedidos[i].id_cst_pedido + "</th>";
+                html += "<th scope='col'>" + pedidos[i].nr_pedido + "</th>";
+                html += "<th scope='col'>" + pedidos[i].vl_total + "</th>";
+                html += "<th scope='col'>" + pedidos[i].dt_created + "</th>";
+                html += "<th scope='col'>" + pedidos[i].id_usercreated + "</th>";
+                html += "<th scope='col'>" + pedidos[i].dt_updated + "</th>";
+                html += "<th scope='col'>" + pedidos[i].id_userupdated + "</th>";
+                html += "<th scope='col'>" + pedidos[i].ds_recordthumbprint + "</th>";
+                html += "<th scope='col'><button class='btn btn-primary btn_editar' type='submit'>!</button></th>"
+                html += "<th scope='col'><button class='btn btn-primary btn_excluir' type='submit'>X</button></th>"
                 html += "</tr>";
                 $(".thd_listar").append(html);
-            })
+            }
             $(".tb_listar").toggle();
         },
         error: (error) => {
-            console.log(error)
+            console.log(error.status)
             alert('Não foi possível listar')
         }
     })
 })
 
-$('.btn_consulta').click(function consultarPedido() {
-    let idPedido = document.querySelector(".input_consulta").value
+$('.btn_consultar').on('click', function consultarPedido(event) {
+    event.preventDefault();
+    //let idPedido = document.querySelector(".input_consulta").value
     $.ajax({
         type: 'GET',
-        url: 'https://estagiarios-hml.plusoftomni.com.br/api/pedidorest/pedido/' + idPedido,
+        url: 'https://testapi.io/api/kielkow/pedidos/5', //+ idPedido,
+        dataType: 'json',
         success: (pedido) => {
             console.log(pedido)
             let html = "<tr>"
-            html += "<th scope='col'>" + pedido[i].id_cst_pedido + "</th>";
-            html += "<th scope='col'>" + pedido[i].nr_pedido + "</th>";
-            html += "<th scope='col'>" + pedido[i].vl_total + "</th>";
-            html += "<th scope='col'>" + pedido[i].dt_created + "</th>";
-            html += "<th scope='col'>" + pedido[i].id_usercreated + "</th>";
-            html += "<th scope='col'>" + pedido[i].dt_updated + "</th>";
-            html += "<th scope='col'>" + pedido[i].id_userupdated + "</th>";
-            html += "<th scope='col'>" + pedido[i].ds_recordthumbprint + "</th>";
+            html += "<th scope='col'>" + pedido.id_cst_pedido + "</th>";
+            html += "<th scope='col'>" + pedido.nr_pedido + "</th>";
+            html += "<th scope='col'>" + pedido.vl_total + "</th>";
+            html += "<th scope='col'>" + pedido.dt_created + "</th>";
+            html += "<th scope='col'>" + pedido.id_usercreated + "</th>";
+            html += "<th scope='col'>" + pedido.dt_updated + "</th>";
+            html += "<th scope='col'>" + pedido.id_userupdated + "</th>";
+            html += "<th scope='col'>" + pedido.ds_recordthumbprint + "</th>";
             html += "</tr>"
             $('.tbody_consulta').append(html)
             $(".tb_consulta").toggle();
         },
         error: (error) => {
-            console.log(error)
+            console.log(error.status)
             alert('Não foi possível buscar pedido ' + idPedido)
         }
     })
