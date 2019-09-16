@@ -18,10 +18,10 @@
     <form class="form formAdd" style="display: none">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">Pedido</span>
+                <span class="input-group-text" id="basic-addon1">N° Pedido</span>
             </div>
-            <input type="text" class="form-control input_nomePedido" placeholder="Nome do pedido" aria-label="Username"
-                aria-describedby="basic-addon1">
+            <input type="number" class="form-control input_numeroPedido" placeholder="Número do pedido"
+                aria-label="Username" aria-describedby="basic-addon1">
         </div>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
@@ -30,7 +30,7 @@
             <input type="number" class="form-control input_valorProduto" placeholder="Valor do pedido"
                 aria-label="Username" aria-describedby="basic-addon1">
         </div>
-        <button class="btn btn-primary btn_salvar" type="submit" id="btn_salvar">Salvar</button>
+        <button class="btn btn-primary btn_salvar" type="submit" onclick="salvar()">Salvar</button>
     </form>
 
     <form class="form formConsulta">
@@ -81,18 +81,103 @@
             <tbody class="tbody_listar"></tbody>
         </table>
     </form>
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="script.js"></script>
+    <script>
+        $.ajax({
+            type: "GET",
+            url: "https://testapi.io/api/kielkow/pedidos",
+            dataType: 'json',
+            success: (pedidos) => {
+                console.log('success', pedidos)
+                for (let i = 0; i < pedidos.length; i++) {
+                    let html = "<tr>";
+                    html += "<th scope='col'>" + pedidos[i].id_cst_pedido + "</th>";
+                    html += "<th scope='col'>" + pedidos[i].nr_pedido + "</th>";
+                    html += "<th scope='col'>" + pedidos[i].vl_total + "</th>";
+                    html += "<th scope='col'>" + pedidos[i].dt_created + "</th>";
+                    html += "<th scope='col'>" + pedidos[i].id_usercreated + "</th>";
+                    html += "<th scope='col'>" + pedidos[i].dt_updated + "</th>";
+                    html += "<th scope='col'>" + pedidos[i].id_userupdated + "</th>";
+                    html += "<th scope='col'>" + pedidos[i].ds_recordthumbprint + "</th>";
+                    html += "<th scope='col'><button class='btn btn-primary btn_editar' type='submit'>!</button></th>"
+                    html += "<th scope='col'><button class='btn btn-primary btn_excluir' type='submit'>X</button></th>"
+                    html += "</tr>";
+                    $(".thd_listar").append(html);
+                }
+                $(".tb_listar").toggle();
+            },
+            error: (error) => {
+                console.log(error.status)
+                alert('Não foi possível listar')
+            }
+        })
+
+        let idPedido = document.querySelector(".input_consulta").value
+        $.ajax({
+            type: 'GET',
+            url: 'https://testapi.io/api/kielkow/pedidos/5', //+ idPedido,
+            dataType: 'json',
+            success: (pedido) => {
+                console.log(pedido)
+                let html = "<tr>"
+                html += "<th scope='col'>" + pedido.id_cst_pedido + "</th>";
+                html += "<th scope='col'>" + pedido.nr_pedido + "</th>";
+                html += "<th scope='col'>" + pedido.vl_total + "</th>";
+                html += "<th scope='col'>" + pedido.dt_created + "</th>";
+                html += "<th scope='col'>" + pedido.id_usercreated + "</th>";
+                html += "<th scope='col'>" + pedido.dt_updated + "</th>";
+                html += "<th scope='col'>" + pedido.id_userupdated + "</th>";
+                html += "<th scope='col'>" + pedido.ds_recordthumbprint + "</th>";
+                html += "</tr>"
+                $('.tbody_consulta').append(html)
+                $(".tb_consulta").toggle();
+            },
+            error: (error) => {
+                console.log(error.status)
+                alert('Não foi possível buscar pedido ' + idPedido)
+            }
+        })
+
+        function salvar() {
+            let numPedido = document.querySelector('.input_numeroPedido');
+            let vTot = document.querySelector('.input_valorProduto');
+
+            document.querySelector('.input_numeroPedido').value = '';
+            document.querySelector('.input_valorProduto').value = '';
+
+            let pedido = {
+                "nr_pedido": numPedido,
+                "vl_total": vTot,
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: 'https://testapi.io/api/kielkow/pedidos',
+                data: pedido,
+                success: function (novoPedido) {
+                    console.log(novoPedido)
+                    alert("Pedido salvo com sucesso")
+                    let html = "<tr>"
+                    html += "<th scope='col'>" + pedido.id_cst_pedido + "</th>";
+                    html += "<th scope='col'>" + pedido.nr_pedido + "</th>";
+                    html += "<th scope='col'>" + pedido.vl_total + "</th>";
+                    html += "<th scope='col'>" + pedido.dt_created + "</th>";
+                    html += "<th scope='col'>" + pedido.id_usercreated + "</th>";
+                    html += "<th scope='col'>" + pedido.dt_updated + "</th>";
+                    html += "<th scope='col'>" + pedido.id_userupdated + "</th>";
+                    html += "<th scope='col'>" + pedido.ds_recordthumbprint + "</th>";
+                    html += "</tr>"
+                    $('.tbody_consulta').append(html)
+                },
+                error: (error) => {
+                    console.log(error)
+                    alert('Não foi possível salvar pedido')
+                }
+            })
+        };
+    </script>
+
 </body>
 
 </html>
