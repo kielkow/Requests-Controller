@@ -5,28 +5,35 @@ $(".btn_novo").on('click', function (event) {
 
 $('.btn_salvar').on('click', function salvarPedido(event) {
     event.preventDefault();
-    let numPedido = document.querySelector('.input_nomePedido');
-    let vTot = document.querySelector('.input_valorProduto');
-
-    document.querySelector('.input_nomePedido').value = '';
+    
+    let numeroPedido = document.querySelector('.input_numeroPedido').value;
+    let valorTotal = document.querySelector('.input_valorProduto').value;
+    
+    document.querySelector('.input_numeroPedido').value = '';
     document.querySelector('.input_valorProduto').value = '';
 
     let pedido = {
-        "nr_pedido": numPedido,
-        "vl_total": vTot,
+        "id_cst_pedido": 90,
+        "nr_pedido": numeroPedido,
+        "vl_total": valorTotal,
+        "dt_created": new Date(),
+        "id_usercreated": 7,
+        "dt_updated": null,
+        "id_userupdated": 188,
+        "ds_recordthumbprint": "E3F6DCA0-AC22-4FA7-A364-31EA191C8AA7"
     }
 
     $.ajax({
         type: 'POST',
-        url: '/api/pedidorest/pedido',
+        url: 'https://testapi.io/api/kielkow/pedidos',
+        dataType: 'json',
         data: pedido,
-        dataType: "json",
-        success: function (result) {
-            console.log(result)
+        success: (pedido) => {
+            console.log(pedido)
             alert("Pedido salvo com sucesso")
         },
         error: (error) => {
-            console.log(error)
+            console.log(error.status)
             alert('Não foi possível salvar pedido')
         }
     })
