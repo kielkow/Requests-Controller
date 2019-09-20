@@ -7,59 +7,81 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
-
     <title>CRUD PLUSOFT</title>
 </head>
 
 <body>
 
-    <h1 class="text-center">CRUD PLUSOFT</h1>
+    <h1 class="text-center">Controle de Pedidos</h1>
 
-    <form class="form">
-        <button class="btn btn-primary" type="submit">+ Novo Pedido</button>
+    <button class="btn btn-primary btn_novo" type="submit">+ Novo Pedido</button>
+    <form class="form formAdd" style="display: none">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">N° Pedido</span>
+            </div>
+            <input type="number" class="form-control input_numeroPedido" placeholder="Número do pedido"
+                aria-label="Username" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Valor</span>
+            </div>
+            <input type="number" class="form-control input_valorProduto" placeholder="Valor do pedido"
+                aria-label="Username" aria-describedby="basic-addon1">
+        </div>
+        <button class="btn btn-primary btn_salvar" type="submit">Salvar</button>
     </form>
 
-    <form class="form">
+    <form class="form formConsulta">
         <div class="form-group">
-            <label for="data">Pedido</label>
-            <input type="number" id="id_pedido" class="form-control" required autofocus
+            <label class="label" for="data">Pedido</label>
+            <input type="number" class="form-control input_consulta" required autofocus
                 placeholder="Digite o número do pedido" />
         </div>
-        <button class="btn btn-primary" type="submit">Consultar</button>
-    </form>
+        <button class="btn btn-primary btn_consultar" type="submit">Consultar</button>
 
-
-    <form class="form">
-        <div class="form-group">
-            <label for="data">Pedidos Cadastrados</label>
-        </div>
-        <button class="btn btn-primary" type="submit">Listar</button>
-
-        <table class="table">
+        <table class="table tb_consulta" style="display: none">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Pedido</th>
-                    <th scope="col">Valor Total</th>
-                    <th scope="col">Data Criação</th>
-                    <th scope="col">ID criado</th>
-                    <th scope="col">Data UP</th>
-                    <th scope="col">ID UP</th>
-                    <th scope="col">Protocolo</th>
+                    <th scope="col" style="text-align: center">ID</th>
+                    <th scope="col" style="text-align: center">Pedido</th>
+                    <th scope="col" style="text-align: center">Valor Total</th>
+                    <th scope="col" style="text-align: center">Data Criação</th>
+                    <th scope="col" style="text-align: center">ID criado</th>
+                    <th scope="col" style="text-align: center">Data UP</th>
+                    <th scope="col" style="text-align: center">ID UP</th>
+                    <th scope="col" style="text-align: center">Protocolo</th>
                 </tr>
             </thead>
+            <tbody class="tbody_consulta"></tbody>
         </table>
     </form>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
+
+    <form class="form formListar">
+        <div class="form-group">
+            <label class="label label_listar" for="data">Pedidos Cadastrados</label>
+        </div>
+        <button class="btn btn-primary btn_listar" type="submit">Listar</button>
+
+        <table class="table tb_listar" style="display: none">
+            <thead class="thd_listar">
+                <tr>
+                    <th scope="col" style="text-align: center">ID</th>
+                    <th scope="col" style="text-align: center">Pedido</th>
+                    <th scope="col" style="text-align: center">Valor Total</th>
+                    <th scope="col" style="text-align: center">Data Criação</th>
+                    <th scope="col" style="text-align: center">ID criado</th>
+                    <th scope="col" style="text-align: center">Data UP</th>
+                    <th scope="col" style="text-align: center">ID UP</th>
+                    <th scope="col" style="text-align: center">Protocolo</th>
+                </tr>
+            </thead>
+            <tbody class="tbody_listar"></tbody>
+        </table>
+    </form>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="script.js"></script>
 </body>
 
