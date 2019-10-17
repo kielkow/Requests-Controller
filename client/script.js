@@ -108,7 +108,7 @@ $('body').on('click', '.btn_consultar', function consultarPedido(event) {
     if (idPedido != '') {
         $.ajax({
             type: 'GET',
-            url: 'http://localhost:3333/' + idPedido,
+            url: 'http://localhost:3333/pedidos/' + idPedido,
             dataType: 'json',
             success: (pedido) => {
                 console.log(pedido)
@@ -167,7 +167,7 @@ $('body').on('click', '.btn_excluir', function excluirPedido(event) {
         
         $.ajax({
             type: 'DELETE',
-            url: 'http://localhost:3333/' + idPedido,
+            url: 'http://localhost:3333/pedidos/' + idPedido,
             dataType: 'json',
             success: (result) => {
                 console.log(result)
