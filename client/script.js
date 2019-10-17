@@ -36,7 +36,7 @@ $('.btn_salvar').on('click', function salvarPedido(event) {
         url: 'http://localhost:3333/pedidos',
         dataType: 'json',
         data: pedido,
-        success: (data, textStatus, xhr) => {
+        success: () => {
             let html = "<tr>";
             html += "<th scope='col' style='text-align: center'>" + pedido.id_cst_pedido + "</th>";
             html += "<th scope='col' style='text-align: center'>" + pedido.nr_pedido + "</th>";

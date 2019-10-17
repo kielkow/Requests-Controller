@@ -64,6 +64,11 @@ const pedidos = [
     "ds_recordthumbprint": "AFA5F2E8-135A-4777-AB07-BB6EBA482FA1"
   }
 ]
+//Middleware Global
+routes.use((req, res, next) => {
+  console.log(`URL: ${req.url} || Method: ${req.method}`)
+  next()
+})
 
 //Check if id´s project exists
 function checkIdExists(req, res, next){
