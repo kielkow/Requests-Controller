@@ -1,1 +1,0 @@
-curl http://localhost:3000/pedidos/pedido/5 -X POST -v -H "Content-type: application/json" -d @files/pedidos.json | json_pp
