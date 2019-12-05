@@ -21,11 +21,11 @@ $('.btn_salvar').on('click', function salvarPedido(event) {
     let data = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDay() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
 
     let pedido = {
-        "id_cst_pedido": 90,
+        "id_cst_pedido": 6,
         "nr_pedido": numeroPedido,
         "vl_total": valorTotal,
         "dt_created": data,
-        "id_usercreated": 7,
+        "id_usercreated": 6,
         "dt_updated": null,
         "id_userupdated": null,
         "ds_recordthumbprint": "E3F6DCA0-AC22-4FA7-A364-31EA191C8AA7"
@@ -33,7 +33,7 @@ $('.btn_salvar').on('click', function salvarPedido(event) {
 
     $.ajax({
         type: 'POST',
-        url: 'http://localhost:3333/pedidos',
+        url: 'http://localhost:4000/requests',
         dataType: 'json',
         data: pedido,
         success: () => {
@@ -69,7 +69,7 @@ $('.btn_listar').on('click', function listarPedido(event) {
 
     $.ajax({
         type: "GET",
-        url: "http://localhost:3333/pedidos",
+        url: "http://localhost:4000/requests",
         dataType: 'json',
         success: (pedidos) => {
             console.log('success', pedidos)
@@ -108,19 +108,19 @@ $('body').on('click', '.btn_consultar', function consultarPedido(event) {
     if (idPedido != '') {
         $.ajax({
             type: 'GET',
-            url: 'http://localhost:3333/pedidos/' + idPedido,
+            url: 'http://localhost:4000/requests?id_cst_pedido=' + idPedido,
             dataType: 'json',
             success: (pedido) => {
-                console.log(pedido)
+                console.log(pedido);
                 let html = "<tr>"
-                html += "<th scope='col' style='text-align: center'>" + pedido.id_cst_pedido + "</th>";
-                html += "<th scope='col' style='text-align: center' class = 'nr_pedido'>" + pedido.nr_pedido + "</th>";
-                html += "<th scope='col' style='text-align: center class = 'vl_total'>" + pedido.vl_total + "</th>";
-                html += "<th scope='col' style='text-align: center'>" + pedido.dt_created + "</th>";
-                html += "<th scope='col' style='text-align: center'>" + pedido.id_usercreated + "</th>";
-                html += "<th scope='col' style='text-align: center'>" + pedido.dt_updated + "</th>";
-                html += "<th scope='col' style='text-align: center'>" + pedido.id_userupdated + "</th>";
-                html += "<th scope='col' style='text-align: center'>" + pedido.ds_recordthumbprint + "</th>";
+                html += "<th scope='col' style='text-align: center'>" + pedido[0].id_cst_pedido + "</th>";
+                html += "<th scope='col' style='text-align: center' class = 'nr_pedido'>" + pedido[0].nr_pedido + "</th>";
+                html += "<th scope='col' style='text-align: center class = 'vl_total'>" + pedido[0].vl_total + "</th>";
+                html += "<th scope='col' style='text-align: center'>" + pedido[0].dt_created + "</th>";
+                html += "<th scope='col' style='text-align: center'>" + pedido[0].id_usercreated + "</th>";
+                html += "<th scope='col' style='text-align: center'>" + pedido[0].dt_updated + "</th>";
+                html += "<th scope='col' style='text-align: center'>" + pedido[0].id_userupdated + "</th>";
+                html += "<th scope='col' style='text-align: center'>" + pedido[0].ds_recordthumbprint + "</th>";
                 html += "</tr>"
                 $('.tbody_consulta').append(html)
                 $(".tb_consulta").show();
@@ -156,6 +156,9 @@ $('body').on("click", ".btn_editar", function (event) {
 $('body').on('click', '.btn_excluir', function excluirPedido(event) {
     event.preventDefault();
 
+    var idPedido = parseInt($(this).parents("tr").find("th:eq(0)").text());
+    console.log(idPedido);
+
     $(".alert-success").hide();
     $(".alert-warning").hide();
 
@@ -167,12 +170,11 @@ $('body').on('click', '.btn_excluir', function excluirPedido(event) {
         
         $.ajax({
             type: 'DELETE',
-            url: 'http://localhost:3333/pedidos/' + idPedido,
+            url: 'http://localhost:4000/requests/' + idPedido,
             dataType: 'json',
             success: (result) => {
                 console.log(result)
                 $(this).parents("th").remove();
-                listarPedido()
                 $(".alert-success").text('Pedido excluído com sucesso!');
             },
             error: (data, textStatus, xhr) => {
@@ -184,17 +186,31 @@ $('body').on('click', '.btn_excluir', function excluirPedido(event) {
     }
 })
 
-$('body').on('click', '.btn_update', function updatePedido(event, idPedido) {
+$('body').on('click', '.btn_update', function updatePedido(event) {
     event.preventDefault();
 
     $(".alert-success").hide();
     $(".alert-warning").hide();
 
-    var nr_pedido = $(this).parents("tr").find(".input_nr_pedido").val();
-    var vl_total = $(this).parents("tr").find(".input_vl_total").val();
+    var idPedido = parseInt($(this).parents("tr").find("th:eq(0)").text());
+    console.log(idPedido);
+
+    var nr_pedido = parseInt($(this).parents("tr").find(".input_nr_pedido").val());
+    var vl_total = parseInt($(this).parents("tr").find(".input_vl_total").val());
 
     let date = new Date();
     let data = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDay() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+
+    let pedido = {
+        "id_cst_pedido": idPedido,
+        "nr_pedido": nr_pedido,
+        "vl_total": vl_total,
+        "dt_created": data,
+        "id_usercreated": 6,
+        "dt_updated": null,
+        "id_userupdated": null,
+        "ds_recordthumbprint": "E3F6DCA0-AC22-4FA7-A364-31EA191C8AA7"
+    };
 
     $(this).parents("tr").find("th:eq(1)").html(nr_pedido);
     $(this).parents("tr").find("th:eq(2)").html(vl_total);
@@ -207,11 +223,10 @@ $('body').on('click', '.btn_update', function updatePedido(event, idPedido) {
 
     $.ajax({
         type: 'PUT',
-        url: 'http://localhost:3333/pedidos/' + idPedido,
+        url: 'http://localhost:4000/requests/' + idPedido,
         data: pedido,
         dataType: 'json',
         success: (result) => {
-            listarPedido()
             alert('Pedido alterado com sucesso!')
         },
         error: (data, textStatus, xhr) => {
